@@ -5,32 +5,15 @@ exports.main = async (context = {}, sendResponse) => {
   // Store contact firstname, configured as propertiesToSend in crm-card.json
   const { firstname } = context.propertiesToSend;
 
-  const introMessage = {
-    type: "alert",
-    title: "Your first UI extension is ready!",
-    variant: "success",
-    body: {
-      type: "text",
-      format: "markdown",
-      text: "Congratulations! You just deployed your first **HubSpot UI extension**. This example CRM card uses the [ZenQuotes public API](https://zenquotes.io/) to display a daily quote. It also includes custom button actions using serverless functions.",
-    },
+  const tileOne = {
+    "type": "tile",
+    "content": [
+      {
+        "type": "heading",
+        "text": "Medical Data"
+      },
+    ]
   };
-
-  const nextSteps = [
-    {
-      type: "divider",
-      distance: "small",
-    },
-    {
-      type: "heading",
-      text: "Next Steps",
-    },
-    {
-      type: "text",
-      format: "markdown",
-      text: "You can explore more [code samples](https://github.com/HubSpot/ui-extensions-examples) or UI components in the [CRM card builder](https://app.hubspot.com/l/extensible-ui/), or try code samples. If you get stuck, take look at your [build or deploy logs](https://app.hubspot.com/l/developer-projects/) or [serverless functions logs](https://app.hubspot.com/l/private-apps/).",
-    },
-  ];
 
   try {
     const { data } = await axios.get("https://zenquotes.io/api/random");
@@ -67,7 +50,7 @@ exports.main = async (context = {}, sendResponse) => {
     ];
 
     sendResponse({
-      sections: [introMessage, ...quoteSections, ...nextSteps],
+      sections: [tileOne],
     });
   } catch (error) {
     // "message" will create an error feedback banner when it catches an error
@@ -76,7 +59,8 @@ exports.main = async (context = {}, sendResponse) => {
         type: "ERROR",
         body: `Error: ${error.message}`,
       },
-      sections: [introMessage],
+      sections: [tileOne],
     });
   }
 };
+
